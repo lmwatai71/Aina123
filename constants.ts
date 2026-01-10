@@ -157,108 +157,45 @@ export const REFERENCE_CROPS: CropInfo[] = [
 
 export const REFERENCE_LIVESTOCK: LivestockInfo[] = [
   {
-    name: "Sheep",
-    hawaiianName: "Hipa",
-    focus: "Grazing & Meat",
-    tips: "Rotate pastures frequently to manage parasites. Good for orchards."
-  },
-  {
     name: "Cattle",
     hawaiianName: "Pipi",
     focus: "Grazing, Meat, Milk",
     tips: "Requires significant space and robust fencing. Essential for large-scale grass management."
   },
   {
+    name: "Horse",
+    hawaiianName: "Lio",
+    focus: "Work, Recreation, Pasture Mgmt",
+    tips: "Needs quality forage and regular hoof care. Good companion grazer with cattle to break parasite cycles."
+  },
+  {
+    name: "Pig",
+    hawaiianName: "Puaʻa",
+    focus: "Meat, Cultural Ceremonies, Tilling",
+    tips: "Requires shade and wallows. Excellent for turning compost or clearing land, but fencing must be strong."
+  },
+  {
+    name: "Goat",
+    hawaiianName: "Kao",
+    focus: "Brush Clearing, Meat, Milk",
+    tips: "Masters of escape; needs very secure fencing. Browsers that prefer shrubs over grass."
+  },
+  {
+    name: "Sheep",
+    hawaiianName: "Hipa",
+    focus: "Grazing & Meat",
+    tips: "Rotate pastures frequently to manage parasites. Good for orchards as they generally don't strip bark like goats."
+  },
+  {
     name: "Chickens",
     hawaiianName: "Moa",
-    focus: "Eggs, Meat, Pest Control, Manure",
-    tips: "Excellent for sanitizing pastures after larger stock. Protect from predators."
-  }
-];
-
-export interface SurveyInfo {
-  category: string;
-  title: string;
-  description: string;
-  steps: string[];
-  tips: string[];
-}
-
-export const REFERENCE_SURVEY: SurveyInfo[] = [
-  {
-    category: "Property Pins",
-    title: "Locating Property Pins",
-    description: "Property pins mark the exact boundaries of your land. They are typically metal stakes or concrete monuments placed by surveyors.",
-    steps: [
-      "Check your property deed or TMK records for existing survey information",
-      "Look for metal pins at the corners of your property - they may be buried slightly",
-      "Use a metal detector if pins are difficult to find",
-      "Contact a licensed surveyor if pins are missing or damaged",
-      "Document pin locations with GPS coordinates and photos"
-    ],
-    tips: [
-      "Property pins are often found at the corners of your lot",
-      "Look for survey markers that are 1/2\" to 1\" in diameter",
-      "Pins may be marked with the surveyor's license number",
-      "Keep vegetation cleared around pin locations",
-      "Take photos of pins before and after any construction"
-    ]
+    focus: "Eggs, Meat, Pest Control",
+    tips: "Excellent for sanitizing pastures after larger stock. Protect from predators (mongoose, dogs)."
   },
   {
-    category: "Property Pins",
-    title: "Marking Property Pins",
-    description: "Properly marking property pins helps prevent boundary disputes and ensures accurate construction.",
-    steps: [
-      "Clean the area around each pin to make it visible",
-      "Place temporary markers like flags or stakes near pins",
-      "Take detailed measurements from pins to permanent structures",
-      "Create a property pin map with measurements and landmarks",
-      "Consider permanent markers for frequently accessed pins"
-    ],
-    tips: [
-      "Use bright colored flags or tape for temporary marking",
-      "Include measurements to nearby roads, buildings, or natural features",
-      "Keep your property pin map in a safe, accessible location",
-      "Share pin locations with contractors before any work begins",
-      "Regularly check and maintain pin markers"
-    ]
-  },
-  {
-    category: "Building Codes",
-    title: "Hawaii Building Codes Overview",
-    description: "Hawaii has specific building codes that vary by island and county. Always consult local authorities for current requirements.",
-    steps: [
-      "Contact your local county building department for specific codes",
-      "Review zoning requirements for your TMK (Tax Map Key)",
-      "Check setback requirements from property lines",
-      "Verify height restrictions and building coverage limits",
-      "Obtain necessary permits before construction begins"
-    ],
-    tips: [
-      "Building codes protect against natural hazards like earthquakes and floods",
-      "Agricultural districts may have different requirements than residential",
-      "Some islands have additional requirements for coastal properties",
-      "Energy efficiency standards are increasingly important",
-      "Historic preservation rules may apply in certain areas"
-    ]
-  },
-  {
-    category: "Building Codes",
-    title: "Agricultural Building Requirements",
-    description: "Special considerations for farm buildings, greenhouses, and agricultural structures in Hawaii.",
-    steps: [
-      "Determine if your structure qualifies as agricultural use",
-      "Check county requirements for agricultural buildings",
-      "Verify foundation and anchoring requirements",
-      "Ensure proper drainage and erosion control",
-      "Plan for future expansion and equipment access"
-    ],
-    tips: [
-      "Many counties allow simplified permitting for small agricultural structures",
-      "Consider wind resistance for structures in exposed areas",
-      "Proper ventilation is crucial in Hawaii's humid climate",
-      "Roof design should account for heavy rainfall",
-      "Some areas require flood elevation certificates"
-    ]
+    name: "Duck",
+    hawaiianName: "Kākā",
+    focus: "Pest Control (Snails/Slugs), Eggs",
+    tips: "Hardy in wet areas. Voracious eaters of garden pests. Needs access to water to keep eyes/nostrils clean."
   }
 ];

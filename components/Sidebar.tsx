@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Sprout, Tractor, Map as MapIcon, Leaf, Info, Ruler } from 'lucide-react';
+import { MessageSquare, Sprout, Tractor, Map as MapIcon, Leaf, Info } from 'lucide-react';
 import { AppView } from '../types';
 
 interface SidebarProps {
@@ -15,7 +15,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, mobileMenuOpen,
     { id: AppView.CROPS, label: 'Nā Mea Kanu (Crops)', icon: Leaf },
     { id: AppView.LIVESTOCK, label: 'Holoholona (Livestock)', icon: Tractor },
     { id: AppView.PLANNING, label: 'Hoʻolālā (Planning)', icon: MapIcon },
-    { id: AppView.SURVEY, label: 'Ana ʻĀina (Survey)', icon: Ruler },
     { id: AppView.ABOUT, label: 'Moʻolelo (About)', icon: Info },
   ];
 
