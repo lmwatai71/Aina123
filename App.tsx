@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
-import { CropsView, LivestockView, PlanningView, AboutView } from './components/ReferenceViews';
+import { CropsView, LivestockView, PlanningView, AboutView, SurveyView } from './components/ReferenceViews';
 import { AppView } from './types';
 
 const App: React.FC = () => {
@@ -19,6 +19,8 @@ const App: React.FC = () => {
         return <LivestockView />;
       case AppView.PLANNING:
         return <PlanningView />;
+      case AppView.SURVEY:
+        return <SurveyView />;
       case AppView.ABOUT:
         return <AboutView />;
       default:

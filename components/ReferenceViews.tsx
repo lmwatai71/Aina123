@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot } from 'lucide-react';
-import { REFERENCE_CROPS, REFERENCE_LIVESTOCK } from '../constants';
+import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, REFERENCE_SURVEY } from '../constants';
 import { sendMessageToAinaMind } from '../services/geminiService';
 
 export const CropsView: React.FC = () => {
@@ -369,6 +369,99 @@ export const AboutView: React.FC = () => {
                <strong>Disclaimer:</strong> AinaMind is an AI assistant. While it strives for accuracy, it is not a replacement for professional veterinary, legal, or financial advice. Always verify important decisions with local experts.
              </div>
           </section>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const SurveyView: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('Property Pins');
+
+  const categories = [...new Set(REFERENCE_SURVEY.map(item => item.category))];
+  const filteredSurveys = REFERENCE_SURVEY.filter(item => item.category === selectedCategory);
+
+  return (
+    <div className="p-6 md:p-10 h-full overflow-y-auto bg-stone-50">
+      <div className="max-w-5xl mx-auto">
+        <header className="mb-8">
+          <h2 className="text-3xl font-bold text-emerald-900 mb-2">Ana ʻĀina (Land Survey)</h2>
+          <p className="text-stone-600">Tools and guidance for property boundaries, pins, and Hawaii building codes.</p>
+        </header>
+
+        {/* Category Filter */}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-white text-emerald-700 border border-emerald-200 hover:bg-emerald-50'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Survey Items */}
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+          {filteredSurveys.map((survey, idx) => (
+            <div key={idx} className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden hover:shadow-md transition-shadow">
+              <div className="bg-emerald-100/50 p-4 border-b border-emerald-100">
+                <h3 className="text-xl font-bold text-emerald-900">{survey.title}</h3>
+                <p className="text-sm text-emerald-700 mt-1">{survey.category}</p>
+              </div>
+              <div className="p-5 space-y-4">
+                <p className="text-stone-700 leading-relaxed">{survey.description}</p>
+                
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <Ruler className="text-emerald-600 mt-0.5" size={16} />
+                    <div className="flex-1">
+                      <span className="font-semibold text-stone-900 block mb-2">Steps</span>
+                      <ol className="list-decimal list-inside text-stone-600 space-y-1 text-sm">
+                        {survey.steps.map((step, stepIdx) => (
+                          <li key={stepIdx}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <Info className="text-blue-500 mt-0.5" size={16} />
+                    <div className="flex-1">
+                      <span className="font-semibold text-stone-900 block mb-2">Tips</span>
+                      <ul className="list-disc list-inside text-stone-600 space-y-1 text-sm">
+                        {survey.tips.map((tip, tipIdx) => (
+                          <li key={tipIdx}>{tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Important Notice */}
+        <div className="mt-8 bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="text-amber-600 mt-0.5" size={20} />
+            <div>
+              <h4 className="font-semibold text-amber-900 mb-1">Important Notice</h4>
+              <p className="text-amber-800 text-sm">
+                This information is for educational purposes only. Always consult with licensed surveyors, 
+                local building departments, and legal professionals for official property boundaries, 
+                permits, and compliance with Hawaii building codes. Requirements vary by island and county.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

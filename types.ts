@@ -3,6 +3,7 @@ export enum AppView {
   CROPS = 'CROPS',
   LIVESTOCK = 'LIVESTOCK',
   PLANNING = 'PLANNING',
+  SURVEY = 'SURVEY',
   ABOUT = 'ABOUT'
 }
 
@@ -26,4 +27,12 @@ export interface LivestockInfo {
   hawaiianName: string;
   focus: string;
   tips: string;
+}
+
+export interface SurveyInfo {
+  category: string;
+  title: string;
+  description: string;
+  steps: string[];
+  tips: string[];
 }
