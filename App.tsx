@@ -2,27 +2,78 @@ import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
-import { CropsView, LivestockView, PlanningView, AboutView } from './components/ReferenceViews';
-import { AppView } from './types';
+import { CropsView, LivestockView, PlanningView, AboutView, MarketplaceView, LaauView } from './components/ReferenceViews';
+import { ProfileView, CommunityView } from './components/UserViews';
+import { AppView, Message, MarketItem, UserProfile, CommunityPost } from './types';
+import { INITIAL_MARKET_ITEMS, INITIAL_COMMUNITY_POSTS } from './constants';
 
 const App: React.FC = () => {
   const [currentView, setView] = useState<AppView>(AppView.CHAT);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Lifted State for Persistence
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 'welcome',
+      role: 'model',
+      content: `Aloha mai kāua! I am AinaMind. 
+
+ʻŌlelo Hawaiʻi:
+Eia au e kōkua iā ʻoe me ka mahi ʻai a me ka mālama ʻāina. He aha kāu e hana nei i kēia lā?
+
+English:
+I am here to help you with farming and land stewardship. What are you working on today?`,
+      timestamp: Date.now()
+    }
+  ]);
+
+  const [marketItems, setMarketItems] = useState<MarketItem[]>(INITIAL_MARKET_ITEMS);
+  
+  // User Authentication State
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  // Community Posts State
+  const [communityPosts, setCommunityPosts] = useState<CommunityPost[]>(INITIAL_COMMUNITY_POSTS);
+
   const renderView = () => {
     switch (currentView) {
       case AppView.CHAT:
-        return <ChatInterface />;
+        return <ChatInterface messages={messages} setMessages={setMessages} />;
       case AppView.CROPS:
         return <CropsView />;
       case AppView.LIVESTOCK:
         return <LivestockView />;
+      case AppView.LAAU:
+        return <LaauView />;
       case AppView.PLANNING:
         return <PlanningView />;
+      case AppView.COMMUNITY:
+        return (
+          <CommunityView 
+            posts={communityPosts}
+            onAddPost={(post) => setCommunityPosts([post, ...communityPosts])}
+            user={user}
+          />
+        );
+      case AppView.MARKETPLACE:
+        return (
+          <MarketplaceView 
+            items={marketItems} 
+            onAddItem={(item) => setMarketItems(prev => [item, ...prev])} 
+          />
+        );
+      case AppView.PROFILE:
+        return (
+          <ProfileView 
+            user={user} 
+            onLogin={(u) => setUser(u)} 
+            onLogout={() => setUser(null)}
+          />
+        );
       case AppView.ABOUT:
         return <AboutView />;
       default:
-        return <ChatInterface />;
+        return <ChatInterface messages={messages} setMessages={setMessages} />;
     }
   };
 

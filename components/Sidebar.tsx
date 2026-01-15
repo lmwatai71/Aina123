@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Sprout, Tractor, Map as MapIcon, Leaf, Info } from 'lucide-react';
+import { MessageSquare, Sprout, Tractor, Map as MapIcon, Leaf, Info, ShoppingBag, HeartPulse, Users, UserCircle } from 'lucide-react';
 import { AppView } from '../types';
 
 interface SidebarProps {
@@ -14,7 +14,11 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, mobileMenuOpen,
     { id: AppView.CHAT, label: 'Kūkākūkā (Chat)', icon: MessageSquare },
     { id: AppView.CROPS, label: 'Nā Mea Kanu (Crops)', icon: Leaf },
     { id: AppView.LIVESTOCK, label: 'Holoholona (Livestock)', icon: Tractor },
+    { id: AppView.LAAU, label: 'Lāʻau (Healing)', icon: HeartPulse },
     { id: AppView.PLANNING, label: 'Hoʻolālā (Planning)', icon: MapIcon },
+    { id: AppView.COMMUNITY, label: 'Manaʻo (Community)', icon: Users },
+    { id: AppView.MARKETPLACE, label: 'Mākeke (Market)', icon: ShoppingBag },
+    { id: AppView.PROFILE, label: 'Kōmole (Profile)', icon: UserCircle },
     { id: AppView.ABOUT, label: 'Moʻolelo (About)', icon: Info },
   ];
 
@@ -44,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, mobileMenuOpen,
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => (
             <button
               key={item.id}

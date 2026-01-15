@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot } from 'lucide-react';
-import { REFERENCE_CROPS, REFERENCE_LIVESTOCK } from '../constants';
+import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot, ShoppingBag, Tag, Plus, X, Search, DollarSign, Filter, HeartPulse, Wind, Activity, Heart, Shield, Dumbbell } from 'lucide-react';
+import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, LAAU_DATA } from '../constants';
 import { sendMessageToAinaMind } from '../services/geminiService';
+import { MarketItem } from '../types';
 
 export const CropsView: React.FC = () => {
   return (
@@ -369,6 +370,351 @@ export const AboutView: React.FC = () => {
                <strong>Disclaimer:</strong> AinaMind is an AI assistant. While it strives for accuracy, it is not a replacement for professional veterinary, legal, or financial advice. Always verify important decisions with local experts.
              </div>
           </section>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const MarketplaceView: React.FC<{
+  items: MarketItem[];
+  onAddItem: (item: MarketItem) => void;
+}> = ({ items, onAddItem }) => {
+  const [showPostForm, setShowPostForm] = useState(false);
+  const [filter, setFilter] = useState('All');
+  
+  // New Item State (Local form state)
+  const [newItem, setNewItem] = useState({
+    title: '',
+    category: 'Livestock',
+    price: '',
+    location: 'Hilo',
+    description: '',
+    contact: ''
+  });
+
+  const categories = ['All', 'Livestock', 'Crops', 'Solar/Energy', 'Equipment', 'Materials'];
+  const locations = ['Hilo', 'Puna', 'Kaʻū', 'Kona', 'Kohala', 'Hāmākua'];
+
+  const handlePostItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newItem.title || !newItem.price || !newItem.contact) return;
+
+    const item: MarketItem = {
+      id: Date.now().toString(),
+      title: newItem.title,
+      category: newItem.category as any,
+      price: newItem.price,
+      location: newItem.location,
+      description: newItem.description,
+      contact: newItem.contact,
+      timestamp: Date.now()
+    };
+
+    onAddItem(item);
+    setShowPostForm(false);
+    setNewItem({
+      title: '',
+      category: 'Livestock',
+      price: '',
+      location: 'Hilo',
+      description: '',
+      contact: ''
+    });
+  };
+
+  const filteredItems = filter === 'All' 
+    ? items 
+    : items.filter(item => item.category === filter);
+
+  return (
+    <div className="p-4 md:p-8 h-full overflow-y-auto bg-stone-50">
+      <div className="max-w-6xl mx-auto">
+        <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-bold text-emerald-900 mb-2 flex items-center gap-3">
+              <ShoppingBag className="text-emerald-600" />
+              Mākeke (Marketplace)
+            </h2>
+            <p className="text-stone-600">Buy, sell, and trade for Hawaiʻi Island's off-grid community.</p>
+          </div>
+          <button 
+            onClick={() => setShowPostForm(true)}
+            className="bg-emerald-700 text-white px-5 py-2.5 rounded-lg hover:bg-emerald-800 transition-colors shadow-md flex items-center gap-2 font-medium"
+          >
+            <Plus size={20} />
+            Post Item
+          </button>
+        </header>
+
+        {/* Post Item Modal/Overlay */}
+        {showPostForm && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+              <div className="p-4 border-b border-stone-200 flex justify-between items-center bg-emerald-50">
+                <h3 className="font-bold text-lg text-emerald-900">Post New Item</h3>
+                <button onClick={() => setShowPostForm(false)} className="text-stone-500 hover:text-stone-800">
+                  <X size={24} />
+                </button>
+              </div>
+              <form onSubmit={handlePostItem} className="p-6 overflow-y-auto space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Item Title</label>
+                  <input 
+                    required
+                    value={newItem.title}
+                    onChange={e => setNewItem({...newItem, title: e.target.value})}
+                    className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                    placeholder="e.g. 50 Gallon Water Drum"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-1">Category</label>
+                    <select 
+                      value={newItem.category}
+                      onChange={e => setNewItem({...newItem, category: e.target.value})}
+                      className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
+                    >
+                      {categories.filter(c => c !== 'All').map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-1">Location (Big Island)</label>
+                    <select 
+                      value={newItem.location}
+                      onChange={e => setNewItem({...newItem, location: e.target.value})}
+                      className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
+                    >
+                      {locations.map(l => (
+                        <option key={l} value={l}>{l}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                   <label className="block text-sm font-medium text-stone-700 mb-1">Price</label>
+                   <div className="relative">
+                      <DollarSign className="absolute left-3 top-2.5 text-stone-400" size={16} />
+                      <input 
+                        required
+                        value={newItem.price}
+                        onChange={e => setNewItem({...newItem, price: e.target.value})}
+                        className="w-full pl-9 px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        placeholder="e.g. 100 or Trade"
+                      />
+                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Description</label>
+                  <textarea 
+                    value={newItem.description}
+                    onChange={e => setNewItem({...newItem, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-24 resize-none"
+                    placeholder="Details about condition, age, etc."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">Contact Info</label>
+                  <input 
+                    required
+                    value={newItem.contact}
+                    onChange={e => setNewItem({...newItem, contact: e.target.value})}
+                    className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                    placeholder="Phone number or email"
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <button type="submit" className="w-full bg-emerald-700 text-white py-3 rounded-lg font-semibold hover:bg-emerald-800 transition-colors">
+                    Post Item
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Filters */}
+        <div className="flex overflow-x-auto pb-4 mb-4 gap-2 no-scrollbar">
+          {categories.map(cat => (
+             <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`
+                  whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border
+                  ${filter === cat 
+                    ? 'bg-emerald-800 text-white border-emerald-800' 
+                    : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'}
+                `}
+             >
+               {cat}
+             </button>
+          ))}
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+           {filteredItems.map(item => (
+             <div key={item.id} className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                <div className="p-5 flex-1">
+                   <div className="flex justify-between items-start mb-2">
+                      <span className="inline-block bg-stone-100 text-stone-600 text-xs px-2 py-1 rounded font-medium mb-2 uppercase tracking-wide">
+                        {item.category}
+                      </span>
+                      <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-1 rounded">
+                        {item.price}
+                      </span>
+                   </div>
+                   <h3 className="font-bold text-lg text-stone-900 mb-1">{item.title}</h3>
+                   <div className="flex items-center text-stone-500 text-sm mb-3">
+                      <MapPin size={14} className="mr-1" />
+                      {item.location}
+                   </div>
+                   <p className="text-stone-600 text-sm line-clamp-3 mb-4">{item.description}</p>
+                </div>
+                <div className="bg-stone-50 px-5 py-3 border-t border-stone-100 mt-auto">
+                   <div className="text-sm font-medium text-stone-800 flex items-center gap-2">
+                      <span className="text-stone-400">Contact:</span> 
+                      {item.contact}
+                   </div>
+                   <div className="text-xs text-stone-400 mt-1">
+                      Posted {new Date(item.timestamp).toLocaleDateString()}
+                   </div>
+                </div>
+             </div>
+           ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const LaauView: React.FC = () => {
+  const [selectedSystem, setSelectedSystem] = useState('respiratory');
+
+  const systems = [
+    { id: 'respiratory', label: 'Respiratory (Hanu)', icon: Wind },
+    { id: 'digestive', label: 'Digestive (Naʻau)', icon: Activity },
+    { id: 'circulatory', label: 'Circulatory (Koko)', icon: Heart },
+    { id: 'musculoskeletal', label: 'Muscles/Bones (Iwi/ʻIʻo)', icon: Dumbbell },
+    { id: 'skin', label: 'Skin (ʻIli)', icon: Shield }
+  ];
+
+  const currentPlants = LAAU_DATA[selectedSystem] || [];
+
+  return (
+    <div className="p-6 md:p-10 h-full overflow-y-auto bg-stone-50">
+      <div className="max-w-5xl mx-auto">
+        <header className="mb-8">
+          <h2 className="text-3xl font-bold text-emerald-900 mb-2 flex items-center gap-3">
+            <HeartPulse className="text-emerald-600" />
+            Lāʻau Lapaʻau (Healing Plants)
+          </h2>
+          <p className="text-stone-600 mb-4">Traditional plant knowledge arranged by body system.</p>
+          
+          <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded text-amber-900 text-sm flex items-start gap-3">
+             <AlertCircle className="flex-shrink-0 mt-0.5" size={18} />
+             <div>
+               <strong>Disclaimer:</strong> This information is for cultural and educational purposes only. 
+               AinaMind does not provide medical advice. Please consult a qualified healthcare professional for any medical concerns.
+             </div>
+          </div>
+        </header>
+
+        {/* System Navigation */}
+        <div className="flex overflow-x-auto pb-4 mb-6 gap-3 no-scrollbar">
+          {systems.map((sys) => {
+            const Icon = sys.icon;
+            return (
+              <button
+                key={sys.id}
+                onClick={() => setSelectedSystem(sys.id)}
+                className={`
+                  flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all whitespace-nowrap shadow-sm
+                  ${selectedSystem === sys.id 
+                    ? 'bg-emerald-800 text-white shadow-md' 
+                    : 'bg-white text-stone-600 border border-stone-200 hover:bg-emerald-50 hover:text-emerald-800'}
+                `}
+              >
+                <Icon size={18} />
+                {sys.label}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Plant Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {currentPlants.map((plant, idx) => (
+            <div key={idx} className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden hover:shadow-md transition-shadow">
+              <div className="bg-emerald-50 p-4 border-b border-emerald-100 flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-bold text-emerald-900">{plant.hawaiianName}</h3>
+                  <p className="text-sm text-emerald-700 font-medium">{plant.plant} • {plant.type}</p>
+                </div>
+                <div className="bg-white p-2 rounded-full shadow-sm text-emerald-600">
+                  <Sprout size={20} />
+                </div>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                {/* Usage Section */}
+                <div>
+                  <h4 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                    <HeartPulse size={12} /> Uses (Hoʻohana)
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="bg-emerald-50/50 p-3 rounded-lg border border-emerald-50">
+                      <span className="block text-xs text-emerald-600 font-semibold mb-1">Hawaiian</span>
+                      <p className="text-stone-800 italic">"{plant.use.hawaiian}"</p>
+                    </div>
+                    <div className="pl-3 border-l-2 border-stone-200">
+                       <span className="block text-xs text-stone-400 font-semibold mb-1">English</span>
+                       <p className="text-stone-600">{plant.use.english}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preparation Section */}
+                <div>
+                  <h4 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                    <Filter size={12} /> Preparation (Hoʻomākaukau)
+                  </h4>
+                  <p className="text-stone-700 text-sm leading-relaxed mb-1">
+                    <span className="font-semibold text-emerald-800">HI:</span> {plant.preparation.hawaiian}
+                  </p>
+                  <p className="text-stone-600 text-sm leading-relaxed">
+                    <span className="font-semibold text-stone-500">EN:</span> {plant.preparation.english}
+                  </p>
+                </div>
+
+                {/* Growing Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-stone-100">
+                   <div>
+                      <div className="flex items-center gap-2 text-stone-800 font-semibold text-sm mb-1">
+                        <MapPin size={14} className="text-amber-600" />
+                        Where it Grows
+                      </div>
+                      <p className="text-xs text-stone-500 leading-snug">{plant.growsAbundantly}</p>
+                   </div>
+                   <div>
+                      <div className="flex items-center gap-2 text-stone-800 font-semibold text-sm mb-1">
+                        <Sun size={14} className="text-amber-500" />
+                        Conditions
+                      </div>
+                      <p className="text-xs text-stone-500 leading-snug">{plant.howToGrow}</p>
+                   </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -3,21 +3,12 @@ import { Send, Loader2, User, Bot } from 'lucide-react';
 import { Message } from '../types';
 import { sendMessageToAinaMind } from '../services/geminiService';
 
-const ChatInterface: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 'welcome',
-      role: 'model',
-      content: `Aloha mai kāua! I am AinaMind. 
+interface ChatInterfaceProps {
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+}
 
-ʻŌlelo Hawaiʻi:
-Eia au e kōkua iā ʻoe me ka mahi ʻai a me ka mālama ʻāina. He aha kāu e hana nei i kēia lā?
-
-English:
-I am here to help you with farming and land stewardship. What are you working on today?`,
-      timestamp: Date.now()
-    }
-  ]);
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, setMessages }) => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -45,6 +36,9 @@ I am here to help you with farming and land stewardship. What are you working on
     setIsLoading(true);
 
     try {
+      // Note: We pass 'messages' (current history) and userMsg.content (new message)
+      // The 'messages' prop here doesn't yet contain 'userMsg' due to closure, 
+      // which is correct for the history context + new message pattern.
       const responseText = await sendMessageToAinaMind(messages, userMsg.content);
       
       const aiMsg: Message = {
