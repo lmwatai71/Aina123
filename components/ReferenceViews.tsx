@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot, ShoppingBag, Tag, Plus, X, Search, DollarSign, Filter, HeartPulse, Wind, Activity, Heart, Shield, Dumbbell, Camera, Map, Navigation, Hash, Instagram, Facebook, Music2, Check, Share2, ArrowLeftRight, Repeat, Phone } from 'lucide-react';
-import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, LAAU_DATA, AINA_SYSTEM_PROMPT } from '../constants';
+import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, AINA_SYSTEM_PROMPT } from '../constants';
 import { sendMessageToAinaMind } from '../services/geminiService';
 import { MarketItem, BarterItem, LaauPlant } from '../types';
 
@@ -331,9 +331,13 @@ export const PlanningView: React.FC = () => {
   );
 };
 
-export const LaauView: React.FC = () => {
+interface LaauViewProps {
+  data: Record<string, LaauPlant[]>;
+  onUpdateData: (data: Record<string, LaauPlant[]>) => void;
+}
+
+export const LaauView: React.FC<LaauViewProps> = ({ data, onUpdateData }) => {
   const [activeCategory, setActiveCategory] = useState<string>('respiratory');
-  const [laauData, setLaauData] = useState<Record<string, LaauPlant[]>>(LAAU_DATA);
   const [showForm, setShowForm] = useState(false);
   
   // New Plant Form State
@@ -355,11 +359,10 @@ export const LaauView: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const url = URL.createObjectURL(file);
-      setLaauData(prev => {
-        const newList = [...(prev[category] || [])];
-        newList[index] = { ...newList[index], imageUrl: url };
-        return { ...prev, [category]: newList };
-      });
+      
+      const newList = [...(data[category] || [])];
+      newList[index] = { ...newList[index], imageUrl: url };
+      onUpdateData({ ...data, [category]: newList });
     }
   };
 
@@ -383,10 +386,10 @@ export const LaauView: React.FC = () => {
         imageUrl: imagePreview || undefined
       };
 
-      setLaauData(prev => ({
-        ...prev,
-        [activeCategory]: [...(prev[activeCategory] || []), plantToAdd]
-      }));
+      onUpdateData({
+        ...data,
+        [activeCategory]: [...(data[activeCategory] || []), plantToAdd]
+      });
 
       setShowForm(false);
       setNewPlant({ use: { hawaiian: '', english: '' }, preparation: { hawaiian: '', english: '' } });
@@ -416,7 +419,7 @@ export const LaauView: React.FC = () => {
 
         {/* Categories */}
         <div className="flex overflow-x-auto pb-4 mb-6 gap-2 no-scrollbar">
-          {Object.keys(laauData).map(cat => (
+          {Object.keys(data).map(cat => (
              <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -456,7 +459,7 @@ export const LaauView: React.FC = () => {
                                 required
                                 className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                                 value={newPlant.hawaiianName || ''}
-                                onChange={e => setNewPlant({...newPlant, hawaiianName: e.target.value})}
+                                onChange={e => setNewPlant(prev => ({...prev, hawaiianName: e.target.value}))}
                                 placeholder="e.g. ʻUhaloa"
                             />
                         </div>
@@ -466,7 +469,7 @@ export const LaauView: React.FC = () => {
                                 required
                                 className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                                 value={newPlant.plant || ''}
-                                onChange={e => setNewPlant({...newPlant, plant: e.target.value})}
+                                onChange={e => setNewPlant(prev => ({...prev, plant: e.target.value}))}
                                 placeholder="e.g. Waltheria indica"
                             />
                         </div>
@@ -477,7 +480,7 @@ export const LaauView: React.FC = () => {
                          <input 
                             className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                             value={newPlant.type || ''}
-                            onChange={e => setNewPlant({...newPlant, type: e.target.value})}
+                            onChange={e => setNewPlant(prev => ({...prev, type: e.target.value}))}
                             placeholder="e.g. Shrub, Tree, Herb"
                         />
                     </div>
@@ -491,7 +494,10 @@ export const LaauView: React.FC = () => {
                                     className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
                                     rows={2}
                                     value={newPlant.use?.hawaiian || ''}
-                                    onChange={e => setNewPlant({...newPlant, use: { ...newPlant.use!, hawaiian: e.target.value }})}
+                                    onChange={e => setNewPlant(prev => ({
+                                        ...prev, 
+                                        use: { hawaiian: e.target.value, english: prev.use?.english || '' }
+                                    }))}
                                 />
                              </div>
                              <div>
@@ -500,7 +506,10 @@ export const LaauView: React.FC = () => {
                                     className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
                                     rows={2}
                                     value={newPlant.use?.english || ''}
-                                    onChange={e => setNewPlant({...newPlant, use: { ...newPlant.use!, english: e.target.value }})}
+                                    onChange={e => setNewPlant(prev => ({
+                                        ...prev, 
+                                        use: { hawaiian: prev.use?.hawaiian || '', english: e.target.value }
+                                    }))}
                                 />
                              </div>
                         </div>
@@ -513,7 +522,10 @@ export const LaauView: React.FC = () => {
                                     className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
                                     rows={2}
                                     value={newPlant.preparation?.hawaiian || ''}
-                                    onChange={e => setNewPlant({...newPlant, preparation: { ...newPlant.preparation!, hawaiian: e.target.value }})}
+                                    onChange={e => setNewPlant(prev => ({
+                                        ...prev, 
+                                        preparation: { hawaiian: e.target.value, english: prev.preparation?.english || '' }
+                                    }))}
                                 />
                              </div>
                              <div>
@@ -522,7 +534,10 @@ export const LaauView: React.FC = () => {
                                     className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
                                     rows={2}
                                     value={newPlant.preparation?.english || ''}
-                                    onChange={e => setNewPlant({...newPlant, preparation: { ...newPlant.preparation!, english: e.target.value }})}
+                                    onChange={e => setNewPlant(prev => ({
+                                        ...prev, 
+                                        preparation: { hawaiian: prev.preparation?.hawaiian || '', english: e.target.value }
+                                    }))}
                                 />
                              </div>
                         </div>
@@ -534,7 +549,7 @@ export const LaauView: React.FC = () => {
                              <input 
                                 className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                                 value={newPlant.growsAbundantly || ''}
-                                onChange={e => setNewPlant({...newPlant, growsAbundantly: e.target.value})}
+                                onChange={e => setNewPlant(prev => ({...prev, growsAbundantly: e.target.value}))}
                             />
                         </div>
                          <div>
@@ -542,7 +557,7 @@ export const LaauView: React.FC = () => {
                              <input 
                                 className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                                 value={newPlant.howToGrow || ''}
-                                onChange={e => setNewPlant({...newPlant, howToGrow: e.target.value})}
+                                onChange={e => setNewPlant(prev => ({...prev, howToGrow: e.target.value}))}
                             />
                         </div>
                      </div>
@@ -589,7 +604,7 @@ export const LaauView: React.FC = () => {
 
         {/* List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {(laauData[activeCategory] || []).map((plant, idx) => (
+          {(data[activeCategory] || []).map((plant, idx) => (
              <div key={idx} className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden group">
                 {plant.imageUrl ? (
                    <div className="h-48 relative">

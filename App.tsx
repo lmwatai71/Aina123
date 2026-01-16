@@ -5,8 +5,8 @@ import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
 import { CropsView, LivestockView, PlanningView, AboutView, MarketplaceView, LaauView, BarterView } from './components/ReferenceViews';
 import { ProfileView, CommunityView } from './components/UserViews';
-import { AppView, Message, MarketItem, UserProfile, CommunityPost, BarterItem } from './types';
-import { INITIAL_MARKET_ITEMS, INITIAL_COMMUNITY_POSTS, INITIAL_BARTER_ITEMS } from './constants';
+import { AppView, Message, MarketItem, UserProfile, CommunityPost, BarterItem, LaauPlant } from './types';
+import { INITIAL_MARKET_ITEMS, INITIAL_COMMUNITY_POSTS, INITIAL_BARTER_ITEMS, LAAU_DATA } from './constants';
 
 const App: React.FC = () => {
   const [currentView, setView] = useState<AppView>(AppView.CHAT);
@@ -30,6 +30,7 @@ I am here to help you with farming and land stewardship. What are you working on
 
   const [marketItems, setMarketItems] = useState<MarketItem[]>(INITIAL_MARKET_ITEMS);
   const [barterItems, setBarterItems] = useState<BarterItem[]>(INITIAL_BARTER_ITEMS);
+  const [laauData, setLaauData] = useState<Record<string, LaauPlant[]>>(LAAU_DATA);
   
   // User Authentication State
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -46,7 +47,12 @@ I am here to help you with farming and land stewardship. What are you working on
       case AppView.LIVESTOCK:
         return <LivestockView />;
       case AppView.LAAU:
-        return <LaauView />;
+        return (
+          <LaauView 
+            data={laauData}
+            onUpdateData={setLaauData}
+          />
+        );
       case AppView.PLANNING:
         return <PlanningView />;
       case AppView.COMMUNITY:
