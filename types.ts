@@ -5,6 +5,7 @@ export enum AppView {
   LIVESTOCK = 'LIVESTOCK',
   PLANNING = 'PLANNING',
   MARKETPLACE = 'MARKETPLACE',
+  BARTER = 'BARTER',
   LAAU = 'LAAU',
   COMMUNITY = 'COMMUNITY',
   PROFILE = 'PROFILE',
@@ -24,6 +25,7 @@ export interface CropInfo {
   description: string;
   plantingSeason: string;
   waterNeeds: string;
+  imageUrl?: string;
 }
 
 export interface LivestockInfo {
@@ -31,6 +33,7 @@ export interface LivestockInfo {
   hawaiianName: string;
   focus: string;
   tips: string;
+  imageUrl?: string;
 }
 
 export interface MarketItem {
@@ -42,6 +45,19 @@ export interface MarketItem {
   description: string;
   contact: string;
   timestamp: number;
+  image?: string;
+}
+
+export interface BarterItem {
+  id: string;
+  title: string; // What they have
+  category: 'Livestock' | 'Produce' | 'Labor' | 'Equipment' | 'Materials';
+  lookingFor: string; // What they want in return
+  location: string;
+  description: string;
+  contact: string;
+  timestamp: number;
+  image?: string;
 }
 
 export interface LaauPlant {
@@ -58,6 +74,7 @@ export interface LaauPlant {
   };
   growsAbundantly: string;
   howToGrow: string;
+  imageUrl?: string;
 }
 
 export interface UserProfile {
@@ -66,14 +83,23 @@ export interface UserProfile {
   location: string;
   bio: string;
   joinedDate: number;
+  socialHandles?: {
+    instagram?: string;
+    facebook?: string;
+    tiktok?: string;
+  };
 }
 
 export interface CommunityPost {
   id: string;
   author: string;
   location: string;
-  category: 'Tip' | 'Observation' | 'Question' | 'Success';
+  category: 'Tip' | 'Observation' | 'Success' | 'Question';
   content: string;
   likes: number;
   timestamp: number;
+  media?: {
+    type: 'image' | 'video';
+    url: string;
+  };
 }

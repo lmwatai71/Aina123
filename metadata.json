@@ -1,5 +1,9 @@
 {
   "name": "Aina771",
   "description": "Open",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
 }

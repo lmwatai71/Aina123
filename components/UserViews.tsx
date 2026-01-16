@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { User, Lock, Mail, MapPin, UserCircle, LogIn, Save, Shield, Check, Users, MessageCircle, Heart, Share2, Plus, Filter, Tag } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { User, Lock, Mail, MapPin, UserCircle, LogIn, Save, Shield, Check, Users, MessageCircle, Heart, Share2, Plus, Filter, Tag, Camera, Video, X, Image as ImageIcon, Instagram, Facebook, Music2 } from 'lucide-react';
 import { UserProfile, CommunityPost } from '../types';
 
 interface ProfileViewProps {
@@ -10,26 +10,67 @@ interface ProfileViewProps {
 
 export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogout }) => {
   const [isRegistering, setIsRegistering] = useState(false);
-  const [formData, setFormData] = useState({
+  // Login/Register Form State
+  const [authData, setAuthData] = useState({
     name: '',
     email: '',
     password: '',
     location: '',
     bio: ''
   });
-  const [isEditing, setIsEditing] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Edit Profile State
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    bio: '',
+    instagram: '',
+    facebook: '',
+    tiktok: ''
+  });
+
+  // Initialize edit state when user loads or edit mode toggles
+  useEffect(() => {
+    if (user) {
+      setEditData({
+        bio: user.bio || '',
+        instagram: user.socialHandles?.instagram || '',
+        facebook: user.socialHandles?.facebook || '',
+        tiktok: user.socialHandles?.tiktok || ''
+      });
+    }
+  }, [user, isEditing]);
+
+  const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
+    // Simulate API call for login/register
     const newUser: UserProfile = {
-      name: formData.name || 'Hanauna Hou',
-      email: formData.email,
-      location: formData.location || 'Hawaiʻi Island',
-      bio: formData.bio || 'Aloha, I am using AinaMind to better steward my land.',
-      joinedDate: Date.now()
+      name: authData.name || 'Hanauna Hou',
+      email: authData.email,
+      location: authData.location || 'Hawaiʻi Island',
+      bio: authData.bio || 'Aloha, I am using AinaMind to better steward my land.',
+      joinedDate: Date.now(),
+      socialHandles: {
+        instagram: '',
+        facebook: '',
+        tiktok: ''
+      }
     };
     onLogin(newUser);
+  };
+
+  const handleSaveProfile = () => {
+    if (!user) return;
+    const updatedUser: UserProfile = {
+      ...user,
+      bio: editData.bio,
+      socialHandles: {
+        instagram: editData.instagram,
+        facebook: editData.facebook,
+        tiktok: editData.tiktok
+      }
+    };
+    onLogin(updatedUser); // Updates the parent state
+    setIsEditing(false);
   };
 
   if (!user) {
@@ -48,7 +89,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
             </p>
           </div>
           
-          <form onSubmit={handleSubmit} className="p-8 space-y-4">
+          <form onSubmit={handleAuthSubmit} className="p-8 space-y-4">
             {isRegistering && (
               <div>
                 <label className="block text-sm font-medium text-stone-700 mb-1">Full Name</label>
@@ -57,8 +98,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
                   <input
                     type="text"
                     required={isRegistering}
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    value={authData.name}
+                    onChange={(e) => setAuthData({...authData, name: e.target.value})}
                     className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     placeholder="Keola Smith"
                   />
@@ -73,8 +114,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
                 <input
                   type="email"
                   required
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  value={authData.email}
+                  onChange={(e) => setAuthData({...authData, email: e.target.value})}
                   className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   placeholder="name@example.com"
                 />
@@ -88,8 +129,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
                 <input
                   type="password"
                   required
-                  value={formData.password}
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  value={authData.password}
+                  onChange={(e) => setAuthData({...authData, password: e.target.value})}
                   className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   placeholder="••••••••"
                 />
@@ -103,8 +144,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
                   <MapPin className="absolute left-3 top-2.5 text-stone-400" size={18} />
                   <input
                     type="text"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
+                    value={authData.location}
+                    onChange={(e) => setAuthData({...authData, location: e.target.value})}
                     className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     placeholder="Waimea, Hawaiʻi"
                   />
@@ -140,7 +181,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
               <UserCircle className="text-emerald-600" />
               Kōmole (Your Profile)
             </h2>
-            <p className="text-stone-600">Manage your personal information and preferences.</p>
+            <p className="text-stone-600">Manage your personal information and social connections.</p>
           </div>
           <button 
             onClick={onLogout}
@@ -170,13 +211,29 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
           <div className="p-8">
             <div className="flex justify-between items-center mb-6">
               <h4 className="text-lg font-bold text-stone-800">Personal Information</h4>
-              <button 
-                onClick={() => setIsEditing(!isEditing)}
-                className="text-emerald-600 font-medium hover:text-emerald-800 flex items-center gap-1"
-              >
-                {isEditing ? <Check size={18}/> : <Share2 size={18}/>}
-                {isEditing ? 'Done' : 'Edit Profile'}
-              </button>
+              {isEditing ? (
+                 <div className="flex gap-2">
+                    <button 
+                      onClick={() => setIsEditing(false)}
+                      className="px-3 py-1 text-sm text-stone-500 hover:bg-stone-100 rounded-lg transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={handleSaveProfile}
+                      className="text-emerald-600 font-medium hover:text-emerald-800 flex items-center gap-1 px-3 py-1 bg-emerald-50 rounded-lg"
+                    >
+                      <Save size={18}/> Save Changes
+                    </button>
+                 </div>
+              ) : (
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="text-emerald-600 font-medium hover:text-emerald-800 flex items-center gap-1"
+                >
+                  <Share2 size={18}/> Edit Profile
+                </button>
+              )}
             </div>
 
             <div className="space-y-6">
@@ -201,12 +258,83 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onLogin, onLogou
                 {isEditing ? (
                   <textarea 
                     className="w-full p-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                    defaultValue={user.bio}
+                    value={editData.bio}
+                    onChange={(e) => setEditData({...editData, bio: e.target.value})}
                     rows={4}
                   />
                 ) : (
                   <div className="text-stone-700 leading-relaxed p-4 bg-stone-50 rounded-lg border border-stone-100 italic">
                     "{user.bio}"
+                  </div>
+                )}
+              </div>
+
+              {/* Social Media Section */}
+              <div className="border-t border-stone-100 pt-6">
+                <h4 className="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
+                  <Share2 size={20} className="text-emerald-600" />
+                  Connected Accounts
+                </h4>
+                
+                {isEditing ? (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-stone-500 mb-1 flex items-center gap-1">
+                        <Instagram size={14} /> Instagram Handle
+                      </label>
+                      <input 
+                         className="w-full p-2 border border-stone-300 rounded-lg text-sm"
+                         placeholder="@username"
+                         value={editData.instagram}
+                         onChange={(e) => setEditData({...editData, instagram: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-stone-500 mb-1 flex items-center gap-1">
+                        <Facebook size={14} /> Facebook Handle
+                      </label>
+                      <input 
+                         className="w-full p-2 border border-stone-300 rounded-lg text-sm"
+                         placeholder="username"
+                         value={editData.facebook}
+                         onChange={(e) => setEditData({...editData, facebook: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-stone-500 mb-1 flex items-center gap-1">
+                        <Music2 size={14} /> TikTok Handle
+                      </label>
+                      <input 
+                         className="w-full p-2 border border-stone-300 rounded-lg text-sm"
+                         placeholder="@username"
+                         value={editData.tiktok}
+                         onChange={(e) => setEditData({...editData, tiktok: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-4">
+                     {user.socialHandles?.instagram ? (
+                        <div className="flex items-center gap-2 px-4 py-2 bg-pink-50 text-pink-700 rounded-full border border-pink-100">
+                          <Instagram size={18} /> @{user.socialHandles.instagram}
+                        </div>
+                     ) : (
+                       <div className="text-sm text-stone-400 italic flex items-center gap-2">
+                         <Instagram size={16} /> No Instagram connected
+                       </div>
+                     )}
+
+                     {user.socialHandles?.facebook && (
+                        <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+                          <Facebook size={18} /> /{user.socialHandles.facebook}
+                        </div>
+                     )}
+
+                     {user.socialHandles?.tiktok && (
+                        <div className="flex items-center gap-2 px-4 py-2 bg-stone-100 text-stone-800 rounded-full border border-stone-200">
+                          <Music2 size={18} /> @{user.socialHandles.tiktok}
+                        </div>
+                     )}
                   </div>
                 )}
               </div>
@@ -234,12 +362,50 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ posts, onAddPost, 
   const [filter, setFilter] = useState('All');
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostCategory, setNewPostCategory] = useState('Observation');
+  
+  // Media Upload State
+  const [mediaPreview, setMediaPreview] = useState<string | null>(null);
+  const [mediaType, setMediaType] = useState<'image' | 'video' | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Social Sync State
+  const [socialSync, setSocialSync] = useState({
+    instagram: false,
+    facebook: false,
+    tiktok: false
+  });
 
   const categories = ['All', 'Tip', 'Observation', 'Question', 'Success'];
+
+  const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'video') => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const url = URL.createObjectURL(file);
+      setMediaPreview(url);
+      setMediaType(type);
+    }
+  };
+
+  const clearMedia = () => {
+    setMediaPreview(null);
+    setMediaType(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const handlePost = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPostContent) return;
+
+    // Simulate Social Posting
+    if (socialSync.instagram || socialSync.facebook || socialSync.tiktok) {
+        let platforms = [];
+        if(socialSync.instagram) platforms.push("Instagram");
+        if(socialSync.facebook) platforms.push("Facebook");
+        if(socialSync.tiktok) platforms.push("TikTok");
+        
+        // In a real app, this would trigger an API call or native share intent
+        alert(`Simulating post synch to: ${platforms.join(', ')}. \n(Note: Real integration requires OAuth/API keys)`);
+    }
 
     const post: CommunityPost = {
       id: Date.now().toString(),
@@ -248,12 +414,22 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ posts, onAddPost, 
       category: newPostCategory as any,
       content: newPostContent,
       likes: 0,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      media: mediaPreview && mediaType ? {
+        type: mediaType,
+        url: mediaPreview
+      } : undefined
     };
 
     onAddPost(post);
     setNewPostContent('');
+    clearMedia();
+    setSocialSync({ instagram: false, facebook: false, tiktok: false });
     setShowPostForm(false);
+  };
+
+  const handleShare = (platform: string) => {
+    alert(`Opening ${platform} share dialog...`);
   };
 
   const filteredPosts = filter === 'All' 
@@ -327,10 +503,99 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ posts, onAddPost, 
                   placeholder="Share what you're seeing in the field..."
                 />
               </div>
+
+              {/* Media Upload Area */}
+              <div className="mb-6">
+                <div className="flex gap-4">
+                   {/* Hidden Inputs for different types */}
+                   <input 
+                      type="file" 
+                      id="image-upload" 
+                      accept="image/*" 
+                      capture="environment"
+                      className="hidden"
+                      onChange={(e) => handleMediaSelect(e, 'image')}
+                   />
+                    <input 
+                      type="file" 
+                      id="video-upload" 
+                      accept="video/*" 
+                      capture="environment"
+                      className="hidden"
+                      onChange={(e) => handleMediaSelect(e, 'video')}
+                   />
+
+                   {!mediaPreview ? (
+                     <>
+                      <label 
+                        htmlFor="image-upload" 
+                        className="flex items-center gap-2 px-4 py-2 bg-stone-100 text-stone-600 rounded-lg cursor-pointer hover:bg-stone-200 transition-colors text-sm font-medium"
+                      >
+                        <Camera size={18} /> Add Photo
+                      </label>
+                      <label 
+                        htmlFor="video-upload" 
+                        className="flex items-center gap-2 px-4 py-2 bg-stone-100 text-stone-600 rounded-lg cursor-pointer hover:bg-stone-200 transition-colors text-sm font-medium"
+                      >
+                        <Video size={18} /> Add Video
+                      </label>
+                     </>
+                   ) : (
+                     <div className="relative rounded-lg overflow-hidden border border-stone-200 bg-black max-w-full md:max-w-sm">
+                        <button 
+                          type="button" 
+                          onClick={clearMedia}
+                          className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded-full hover:bg-black/80 transition-colors z-10"
+                        >
+                          <X size={16} />
+                        </button>
+                        {mediaType === 'image' ? (
+                          <img src={mediaPreview} alt="Preview" className="max-h-48 w-auto object-contain" />
+                        ) : (
+                          <video src={mediaPreview} controls className="max-h-48 w-auto" />
+                        )}
+                     </div>
+                   )}
+                </div>
+              </div>
+
+              {/* Social Sync Toggles */}
+              <div className="mb-6 bg-stone-50 p-4 rounded-lg border border-stone-200">
+                  <span className="block text-sm font-bold text-stone-700 mb-3">Auto-post to Social Media</span>
+                  <div className="flex flex-wrap gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                         <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${socialSync.instagram ? 'bg-pink-600 border-pink-600' : 'bg-white border-stone-300'}`}>
+                             {socialSync.instagram && <Check size={14} className="text-white"/>}
+                         </div>
+                         <input type="checkbox" className="hidden" checked={socialSync.instagram} onChange={() => setSocialSync({...socialSync, instagram: !socialSync.instagram})} />
+                         <span className="text-sm text-stone-600 flex items-center gap-1"><Instagram size={14}/> Instagram</span>
+                      </label>
+
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                         <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${socialSync.facebook ? 'bg-blue-600 border-blue-600' : 'bg-white border-stone-300'}`}>
+                             {socialSync.facebook && <Check size={14} className="text-white"/>}
+                         </div>
+                         <input type="checkbox" className="hidden" checked={socialSync.facebook} onChange={() => setSocialSync({...socialSync, facebook: !socialSync.facebook})} />
+                         <span className="text-sm text-stone-600 flex items-center gap-1"><Facebook size={14}/> Facebook</span>
+                      </label>
+
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                         <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${socialSync.tiktok ? 'bg-black border-black' : 'bg-white border-stone-300'}`}>
+                             {socialSync.tiktok && <Check size={14} className="text-white"/>}
+                         </div>
+                         <input type="checkbox" className="hidden" checked={socialSync.tiktok} onChange={() => setSocialSync({...socialSync, tiktok: !socialSync.tiktok})} />
+                         <span className="text-sm text-stone-600 flex items-center gap-1"><Music2 size={14}/> TikTok</span>
+                      </label>
+                  </div>
+              </div>
+
               <div className="flex justify-end gap-3">
                 <button 
                   type="button" 
-                  onClick={() => setShowPostForm(false)}
+                  onClick={() => {
+                    setShowPostForm(false);
+                    clearMedia();
+                  }}
                   className="px-4 py-2 text-stone-600 hover:bg-stone-100 rounded-lg transition-colors"
                 >
                   Cancel
@@ -373,9 +638,20 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ posts, onAddPost, 
                  </span>
                </div>
                
-               <p className="text-stone-800 leading-relaxed mb-4 text-lg">
+               <p className="text-stone-800 leading-relaxed mb-4 text-lg whitespace-pre-wrap">
                  {post.content}
                </p>
+
+               {/* Render Media Attachment */}
+               {post.media && (
+                 <div className="mb-4 rounded-xl overflow-hidden border border-stone-100 bg-black/5">
+                    {post.media.type === 'image' ? (
+                      <img src={post.media.url} alt="Post attachment" className="w-full max-h-96 object-cover" />
+                    ) : (
+                      <video src={post.media.url} controls className="w-full max-h-96" />
+                    )}
+                 </div>
+               )}
 
                <div className="flex items-center gap-6 pt-4 border-t border-stone-100 text-stone-500 text-sm">
                  <button className="flex items-center gap-2 hover:text-red-500 transition-colors">
@@ -384,9 +660,23 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ posts, onAddPost, 
                  <button className="flex items-center gap-2 hover:text-emerald-700 transition-colors">
                    <MessageCircle size={18} /> Reply
                  </button>
-                 <button className="flex items-center gap-2 hover:text-blue-600 transition-colors ml-auto">
-                   <Share2 size={18} /> Share
-                 </button>
+                 <div className="ml-auto flex items-center gap-2 group relative">
+                    <button className="flex items-center gap-2 hover:text-blue-600 transition-colors peer">
+                       <Share2 size={18} /> Share
+                    </button>
+                    {/* Hover Menu for sharing */}
+                    <div className="absolute bottom-full right-0 mb-2 bg-white shadow-xl border border-stone-200 rounded-lg p-2 w-40 hidden group-hover:block peer-hover:block">
+                        <button onClick={() => handleShare('Instagram')} className="w-full text-left px-3 py-2 hover:bg-stone-50 rounded flex items-center gap-2 text-stone-700">
+                           <Instagram size={14}/> Instagram
+                        </button>
+                        <button onClick={() => handleShare('Facebook')} className="w-full text-left px-3 py-2 hover:bg-stone-50 rounded flex items-center gap-2 text-stone-700">
+                           <Facebook size={14}/> Facebook
+                        </button>
+                        <button onClick={() => handleShare('TikTok')} className="w-full text-left px-3 py-2 hover:bg-stone-50 rounded flex items-center gap-2 text-stone-700">
+                           <Music2 size={14}/> TikTok
+                        </button>
+                    </div>
+                 </div>
                </div>
             </div>
           ))}

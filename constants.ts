@@ -1,4 +1,5 @@
-import { CropInfo, LivestockInfo, MarketItem, LaauPlant, CommunityPost } from './types';
+
+import { CropInfo, LivestockInfo, MarketItem, BarterItem, LaauPlant, CommunityPost } from './types';
 
 export const LAAU_DATA: Record<string, LaauPlant[]> = {
   respiratory: [
@@ -15,7 +16,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Boil roots into a mild tea or chew traditionally"
       },
       growsAbundantly: "Dry to mesic lowlands across all major Hawaiian islands",
-      howToGrow: "Full sun, tolerates poor soil, grows easily from cuttings"
+      howToGrow: "Full sun, tolerates poor soil, grows easily from cuttings",
+      imageUrl: "https://images.unsplash.com/photo-1505566670870-b74f07a5050f?auto=format&fit=crop&q=80&w=600"
     },
     {
       plant: "Laukahi",
@@ -30,7 +32,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Leaves steeped as tea; crushed leaves used as poultice"
       },
       growsAbundantly: "Roadsides, disturbed soils, wet and dry areas statewide",
-      howToGrow: "Moist soil, partial shade to full sun, grows easily from seed"
+      howToGrow: "Moist soil, partial shade to full sun, grows easily from seed",
+      imageUrl: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=600"
     }
   ],
   digestive: [
@@ -47,7 +50,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Grate rhizome into tea or warm infusions"
       },
       growsAbundantly: "Wet, shaded areas of Hawaiʻi Island, Maui, Kauaʻi",
-      howToGrow: "Plant rhizomes in rich moist soil, partial shade, harvest after 8–10 months"
+      howToGrow: "Plant rhizomes in rich moist soil, partial shade, harvest after 8–10 months",
+      imageUrl: "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&q=80&w=600"
     },
     {
       plant: "Noni",
@@ -62,7 +66,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Fruit fermented or juiced; leaves used in warm infusions"
       },
       growsAbundantly: "Coastal areas and lowlands across all islands",
-      howToGrow: "Full sun, drought tolerant, thrives in sandy or rocky soil"
+      howToGrow: "Full sun, drought tolerant, thrives in sandy or rocky soil",
+      imageUrl: "https://images.unsplash.com/photo-1596092123512-2581691a829e?auto=format&fit=crop&q=80&w=600"
     }
   ],
   circulatory: [
@@ -79,7 +84,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Dry leaves and brew as tea"
       },
       growsAbundantly: "Native forests of Hawaiʻi Island and Maui",
-      howToGrow: "Partial shade, moist well‑drained soil, protect from wind"
+      howToGrow: "Partial shade, moist well‑drained soil, protect from wind",
+      imageUrl: "https://images.unsplash.com/photo-1593015569424-345371c63391?auto=format&fit=crop&q=80&w=600"
     },
     {
       plant: "Ko",
@@ -94,7 +100,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Juice extracted from stalk; added to herbal teas"
       },
       growsAbundantly: "Lowland agricultural zones statewide",
-      howToGrow: "Plant cuttings, full sun, moderate watering, harvest in 12–18 months"
+      howToGrow: "Plant cuttings, full sun, moderate watering, harvest in 12–18 months",
+      imageUrl: "https://images.unsplash.com/photo-1547528340-622877a50b73?auto=format&fit=crop&q=80&w=600"
     }
   ],
   musculoskeletal: [
@@ -111,7 +118,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Pound roots and strain into traditional drink"
       },
       growsAbundantly: "Humid, shaded valleys of Hawaiʻi Island and Puna",
-      howToGrow: "Shade, high humidity, rich soil, consistent water, harvest after 2–3 years"
+      howToGrow: "Shade, high humidity, rich soil, consistent water, harvest after 2–3 years",
+      imageUrl: "https://images.unsplash.com/photo-1563820257529-6b5773199846?auto=format&fit=crop&q=80&w=600"
     },
     {
       plant: "Kukui",
@@ -126,7 +134,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Nuts pressed for oil; leaves used in warm compresses"
       },
       growsAbundantly: "Dry to mesic forests across all islands",
-      howToGrow: "Full sun, drought tolerant, grows quickly from seed"
+      howToGrow: "Full sun, drought tolerant, grows quickly from seed",
+      imageUrl: "https://images.unsplash.com/photo-1599598425947-32c02dc21844?auto=format&fit=crop&q=80&w=600"
     }
   ],
   skin: [
@@ -143,7 +152,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Apply gel directly from leaf"
       },
       growsAbundantly: "Dry, sunny areas statewide",
-      howToGrow: "Full sun, sandy soil, minimal watering"
+      howToGrow: "Full sun, sandy soil, minimal watering",
+      imageUrl: "https://images.unsplash.com/photo-1596547610029-4649de1b427a?auto=format&fit=crop&q=80&w=600"
     },
     {
       plant: "Kī",
@@ -158,7 +168,8 @@ export const LAAU_DATA: Record<string, LaauPlant[]> = {
         english: "Warm leaves and apply externally"
       },
       growsAbundantly: "Wet and mesic areas across all islands",
-      howToGrow: "Plant cuttings, moist soil, partial shade to full sun"
+      howToGrow: "Plant cuttings, moist soil, partial shade to full sun",
+      imageUrl: "https://images.unsplash.com/photo-1596436924294-08c3534b172a?auto=format&fit=crop&q=80&w=600"
     }
   ]
 };
@@ -233,7 +244,7 @@ CORE DOMAINS YOU SUPPORT:
   - Feed planning (pasture + supplemental feed, kitchen scraps where appropriate).
   - Manure handling and compost integration.
   - General health awareness (signs of stress, parasites, injury) — but never diagnose or prescribe medication.
-- Emphasize:
+  - Emphasize:
   - Integration of livestock into soil building and farm systems.
   - Humane, respectful treatment.
 
@@ -306,28 +317,48 @@ export const REFERENCE_CROPS: CropInfo[] = [
     hawaiianName: "Kalo",
     description: "The staple of the Hawaiian diet. Needs consistent moisture and dedication.",
     plantingSeason: "Year-round (check moon phases)",
-    waterNeeds: "High (lo'i) or Moderate (mala)"
+    waterNeeds: "High (lo'i) or Moderate (mala)",
+    imageUrl: "https://images.unsplash.com/photo-1652541594241-768341df9045?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Breadfruit",
     hawaiianName: "ʻUlu",
     description: "A resilient starch crop and canopy tree. Excellent for food security.",
     plantingSeason: "Rainy season",
-    waterNeeds: "Moderate"
+    waterNeeds: "Moderate",
+    imageUrl: "https://images.unsplash.com/photo-1627402927282-32a856a2982d?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Sweet Potato",
     hawaiianName: "ʻUala",
     description: "Fast-growing ground cover and starch. Good for drier zones.",
     plantingSeason: "Year-round",
-    waterNeeds: "Low to Moderate"
+    waterNeeds: "Low to Moderate",
+    imageUrl: "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Banana",
     hawaiianName: "Maiʻa",
     description: "Fast growing fruit and windbreak. Heavy feeder.",
     plantingSeason: "Year-round",
-    waterNeeds: "Moderate to High"
+    waterNeeds: "Moderate to High",
+    imageUrl: "https://images.unsplash.com/photo-1603833665858-e61d17a86224?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    name: "Papaya",
+    hawaiianName: "Mīkana",
+    description: "Fast growing, productive fruit tree. Excellent source of vitamins.",
+    plantingSeason: "Year-round",
+    waterNeeds: "Moderate",
+    imageUrl: "https://images.unsplash.com/photo-1517260739337-6799d2df894f?auto=format&fit=crop&q=80&w=600"
+  },
+  {
+    name: "Avocado",
+    hawaiianName: "Pea",
+    description: "Nutrient-dense fruit. Requires well-drained soil.",
+    plantingSeason: "Spring - Fall",
+    waterNeeds: "Moderate",
+    imageUrl: "https://images.unsplash.com/photo-1523049673856-38101a0528c7?auto=format&fit=crop&q=80&w=600"
   }
 ];
 
@@ -336,43 +367,50 @@ export const REFERENCE_LIVESTOCK: LivestockInfo[] = [
     name: "Cattle",
     hawaiianName: "Pipi",
     focus: "Grazing, Meat, Milk",
-    tips: "Requires significant space and robust fencing. Essential for large-scale grass management."
+    tips: "Requires significant space and robust fencing. Essential for large-scale grass management.",
+    imageUrl: "https://images.unsplash.com/photo-1545468800-85cc9bc6ecf7?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Horse",
     hawaiianName: "Lio",
     focus: "Work, Recreation, Pasture Mgmt",
-    tips: "Needs quality forage and regular hoof care. Good companion grazer with cattle to break parasite cycles."
+    tips: "Needs quality forage and regular hoof care. Good companion grazer with cattle to break parasite cycles.",
+    imageUrl: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Pig",
     hawaiianName: "Puaʻa",
     focus: "Meat, Cultural Ceremonies, Tilling",
-    tips: "Requires shade and wallows. Excellent for turning compost or clearing land, but fencing must be strong."
+    tips: "Requires shade and wallows. Excellent for turning compost or clearing land, but fencing must be strong.",
+    imageUrl: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Goat",
     hawaiianName: "Kao",
     focus: "Brush Clearing, Meat, Milk",
-    tips: "Masters of escape; needs very secure fencing. Browsers that prefer shrubs over grass."
+    tips: "Masters of escape; needs very secure fencing. Browsers that prefer shrubs over grass.",
+    imageUrl: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Sheep",
     hawaiianName: "Hipa",
     focus: "Grazing & Meat",
-    tips: "Rotate pastures frequently to manage parasites. Good for orchards as they generally don't strip bark like goats."
+    tips: "Rotate pastures frequently to manage parasites. Good for orchards as they generally don't strip bark like goats.",
+    imageUrl: "https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Chickens",
     hawaiianName: "Moa",
     focus: "Eggs, Meat, Pest Control",
-    tips: "Excellent for sanitizing pastures after larger stock. Protect from predators (mongoose, dogs)."
+    tips: "Excellent for sanitizing pastures after larger stock. Protect from predators (mongoose, dogs).",
+    imageUrl: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&q=80&w=600"
   },
   {
     name: "Duck",
     hawaiianName: "Kākā",
     focus: "Pest Control (Snails/Slugs), Eggs",
-    tips: "Hardy in wet areas. Voracious eaters of garden pests. Needs access to water to keep eyes/nostrils clean."
+    tips: "Hardy in wet areas. Voracious eaters of garden pests. Needs access to water to keep eyes/nostrils clean.",
+    imageUrl: "https://images.unsplash.com/photo-1555852095-64e7428df0fa?auto=format&fit=crop&q=80&w=600"
   }
 ];
 
@@ -385,7 +423,8 @@ export const INITIAL_MARKET_ITEMS: MarketItem[] = [
     location: 'Waimea',
     description: 'Weaned ram lambs, parasite resistant genetics. Ready for new pastures.',
     contact: '808-555-0101',
-    timestamp: Date.now() - 10000000
+    timestamp: Date.now() - 10000000,
+    image: 'https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&q=80&w=600'
   },
   {
     id: '2',
@@ -395,7 +434,8 @@ export const INITIAL_MARKET_ITEMS: MarketItem[] = [
     location: 'Hilo (Keaukaha)',
     description: 'Moi, Lehua, and Bun Long varieties available. Fresh cut.',
     contact: 'aloha@farm.com',
-    timestamp: Date.now() - 5000000
+    timestamp: Date.now() - 5000000,
+    image: 'https://images.unsplash.com/photo-1652541594241-768341df9045?auto=format&fit=crop&q=80&w=600'
   },
   {
     id: '3',
@@ -405,7 +445,8 @@ export const INITIAL_MARKET_ITEMS: MarketItem[] = [
     location: 'Ocean View (Kaʻū)',
     description: 'Used bank, still holds charge. Good starter for small cabin.',
     contact: '808-555-0123',
-    timestamp: Date.now() - 2000000
+    timestamp: Date.now() - 2000000,
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=600'
   },
   {
     id: '4',
@@ -415,7 +456,44 @@ export const INITIAL_MARKET_ITEMS: MarketItem[] = [
     location: 'Kona',
     description: 'Cleaned, 275 gallon totes. Perfect for catchment.',
     contact: 'konafarm@mail.com',
-    timestamp: Date.now()
+    timestamp: Date.now(),
+    image: 'https://images.unsplash.com/photo-1595245890258-29367d3de92d?auto=format&fit=crop&q=80&w=600'
+  }
+];
+
+export const INITIAL_BARTER_ITEMS: BarterItem[] = [
+  {
+    id: '1',
+    title: '50 lbs Apple Bananas',
+    category: 'Produce',
+    lookingFor: 'Fence repair help or Manure',
+    location: 'Honaunau',
+    description: 'Ripe and green bunches available. Will trade for labor helping fix a fence line or chicken manure.',
+    contact: '808-555-9988',
+    timestamp: Date.now() - 8000000,
+    image: 'https://images.unsplash.com/photo-1603833665858-e61d17a86224?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: '2',
+    title: 'Young Rooster (Rhode Island Red)',
+    category: 'Livestock',
+    lookingFor: 'Sweet Potato Slips or Kalo Huli',
+    location: 'Pahoa',
+    description: 'Healthy young rooster, too many for my flock. Trade for planting material.',
+    contact: 'puna@mail.com',
+    timestamp: Date.now() - 3000000,
+    image: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: '3',
+    title: 'Compost (1 Truck Load)',
+    category: 'Materials',
+    lookingFor: 'Fresh Fish or Venison',
+    location: 'Hamakua',
+    description: 'Fully broken down compost. Will load your truck in exchange for fresh protein.',
+    contact: '808-555-1122',
+    timestamp: Date.now(),
+    image: 'https://images.unsplash.com/photo-1588614481068-15049d586749?auto=format&fit=crop&q=80&w=600'
   }
 ];
 

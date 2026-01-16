@@ -1,11 +1,12 @@
+
 import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
-import { CropsView, LivestockView, PlanningView, AboutView, MarketplaceView, LaauView } from './components/ReferenceViews';
+import { CropsView, LivestockView, PlanningView, AboutView, MarketplaceView, LaauView, BarterView } from './components/ReferenceViews';
 import { ProfileView, CommunityView } from './components/UserViews';
-import { AppView, Message, MarketItem, UserProfile, CommunityPost } from './types';
-import { INITIAL_MARKET_ITEMS, INITIAL_COMMUNITY_POSTS } from './constants';
+import { AppView, Message, MarketItem, UserProfile, CommunityPost, BarterItem } from './types';
+import { INITIAL_MARKET_ITEMS, INITIAL_COMMUNITY_POSTS, INITIAL_BARTER_ITEMS } from './constants';
 
 const App: React.FC = () => {
   const [currentView, setView] = useState<AppView>(AppView.CHAT);
@@ -28,6 +29,7 @@ I am here to help you with farming and land stewardship. What are you working on
   ]);
 
   const [marketItems, setMarketItems] = useState<MarketItem[]>(INITIAL_MARKET_ITEMS);
+  const [barterItems, setBarterItems] = useState<BarterItem[]>(INITIAL_BARTER_ITEMS);
   
   // User Authentication State
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -60,6 +62,13 @@ I am here to help you with farming and land stewardship. What are you working on
           <MarketplaceView 
             items={marketItems} 
             onAddItem={(item) => setMarketItems(prev => [item, ...prev])} 
+          />
+        );
+      case AppView.BARTER:
+        return (
+          <BarterView
+            items={barterItems}
+            onAddItem={(item) => setBarterItems(prev => [item, ...prev])}
           />
         );
       case AppView.PROFILE:
