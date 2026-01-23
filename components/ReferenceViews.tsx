@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot, ShoppingBag, Tag, Plus, X, Search, DollarSign, Filter, HeartPulse, Wind, Activity, Heart, Shield, Dumbbell, Camera, Map, Navigation, Hash, Instagram, Facebook, Music2, Check, Share2, ArrowLeftRight, Repeat, Phone } from 'lucide-react';
+import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot, ShoppingBag, Tag, Plus, X, Search, DollarSign, Filter, HeartPulse, Wind, Activity, Heart, Shield, Dumbbell, Camera, Map, Navigation, Hash, Instagram, Facebook, Music2, Check, Share2, ArrowLeftRight, Repeat, Phone, ExternalLink, Layers } from 'lucide-react';
 import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, AINA_SYSTEM_PROMPT } from '../constants';
 import { sendMessageToAinaMind } from '../services/geminiService';
 import { MarketItem, BarterItem, LaauPlant } from '../types';
@@ -190,7 +190,7 @@ export const PlanningView: React.FC = () => {
           <p className="text-stone-600">Draft your vision using site-specific data.</p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Form */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
              <div className="space-y-4">
@@ -325,6 +325,87 @@ export const PlanningView: React.FC = () => {
                </div>
              )}
           </div>
+        </div>
+
+        {/* GIS & Maps Section */}
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-200 mt-8">
+           <h3 className="text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+             <Layers size={24} className="text-emerald-600"/> 
+             Nā Palapala ʻĀina (GIS & Maps)
+           </h3>
+           <p className="text-stone-600 mb-6 text-sm">
+             Access official government mapping tools to verify TMK, zoning classifications (Ag-5, Ag-20, etc.), flood zones, and soil composition.
+           </p>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+              <a 
+                href="https://geoportal.hawaiicounty.gov/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 p-4 rounded-xl border border-stone-200 hover:border-emerald-500 hover:bg-emerald-50 transition-all group"
+              >
+                 <div className="bg-emerald-100 p-3 rounded-lg text-emerald-800 group-hover:bg-emerald-200 transition-colors">
+                    <Map size={24} />
+                 </div>
+                 <div className="flex-1">
+                    <div className="flex items-center gap-2 font-bold text-stone-900">
+                       Hawaiʻi County GIS <ExternalLink size={14} className="text-stone-400"/>
+                    </div>
+                    <p className="text-xs text-stone-500 mt-1">Official county zoning, parcels, and infrastructure maps.</p>
+                 </div>
+              </a>
+
+              <a 
+                href="http://gis.hawaiinfip.org/fhat/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 p-4 rounded-xl border border-stone-200 hover:border-blue-500 hover:bg-blue-50 transition-all group"
+              >
+                 <div className="bg-blue-100 p-3 rounded-lg text-blue-800 group-hover:bg-blue-200 transition-colors">
+                    <Droplets size={24} />
+                 </div>
+                 <div className="flex-1">
+                    <div className="flex items-center gap-2 font-bold text-stone-900">
+                       Flood Hazard Tool <ExternalLink size={14} className="text-stone-400"/>
+                    </div>
+                    <p className="text-xs text-stone-500 mt-1">State of Hawaiʻi Flood Hazard Assessment Tool (FHAT).</p>
+                 </div>
+              </a>
+
+              <a 
+                href="https://kipukadatabase.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 p-4 rounded-xl border border-stone-200 hover:border-amber-500 hover:bg-amber-50 transition-all group"
+              >
+                 <div className="bg-amber-100 p-3 rounded-lg text-amber-800 group-hover:bg-amber-200 transition-colors">
+                    <Mountain size={24} />
+                 </div>
+                 <div className="flex-1">
+                    <div className="flex items-center gap-2 font-bold text-stone-900">
+                       Kīpuka Database <ExternalLink size={14} className="text-stone-400"/>
+                    </div>
+                    <p className="text-xs text-stone-500 mt-1">OHA's database of land awards, ahupuaʻa, and historic sites.</p>
+                 </div>
+              </a>
+
+              <a 
+                href="https://websoilsurvey.sc.egov.usda.gov/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 p-4 rounded-xl border border-stone-200 hover:border-stone-500 hover:bg-stone-50 transition-all group"
+              >
+                 <div className="bg-stone-200 p-3 rounded-lg text-stone-700 group-hover:bg-stone-300 transition-colors">
+                    <Sprout size={24} />
+                 </div>
+                 <div className="flex-1">
+                    <div className="flex items-center gap-2 font-bold text-stone-900">
+                       USDA Web Soil Survey <ExternalLink size={14} className="text-stone-400"/>
+                    </div>
+                    <p className="text-xs text-stone-500 mt-1">Detailed soil composition and capability data.</p>
+                 </div>
+              </a>
+           </div>
         </div>
       </div>
     </div>
