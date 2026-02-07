@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot, ShoppingBag, Tag, Plus, X, Search, DollarSign, Filter, HeartPulse, Wind, Activity, Heart, Shield, Dumbbell, Camera, Map, Navigation, Hash, Instagram, Facebook, Music2, Check, Share2, ArrowLeftRight, Repeat, Phone, ExternalLink, Layers } from 'lucide-react';
-import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, AINA_SYSTEM_PROMPT } from '../constants';
+import { Droplets, Calendar, Sun, Info, AlertCircle, MapPin, Ruler, Mountain, Sprout, Loader2, FileText, RefreshCw, Bot, ShoppingBag, Tag, Plus, X, Search, DollarSign, Filter, HeartPulse, Wind, Activity, Heart, Shield, Dumbbell, Camera, Map, Navigation, Hash, Instagram, Facebook, Music2, Check, Share2, ArrowLeftRight, Repeat, Phone, ExternalLink, Layers, Bug, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { REFERENCE_CROPS, REFERENCE_LIVESTOCK, AINA_SYSTEM_PROMPT, REFERENCE_PESTS } from '../constants';
 import { sendMessageToAinaMind } from '../services/geminiService';
 import { MarketItem, BarterItem, LaauPlant } from '../types';
 
@@ -107,6 +107,125 @@ export const LivestockView: React.FC = () => {
     </div>
   );
 };
+
+export const PestControlView: React.FC = () => {
+  const [filter, setFilter] = useState<'All' | 'Crops' | 'Livestock'>('All');
+
+  const filteredPests = filter === 'All' 
+    ? REFERENCE_PESTS 
+    : REFERENCE_PESTS.filter(pest => pest.affects === filter || pest.affects === 'Both');
+
+  return (
+    <div className="p-6 md:p-10 h-full overflow-y-auto bg-stone-50">
+       <div className="max-w-5xl mx-auto">
+        <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-bold text-emerald-900 mb-2 flex items-center gap-3">
+               <Bug className="text-emerald-600" />
+               Nā Mea ʻino (Pests & Management)
+            </h2>
+            <p className="text-stone-600">Identify and manage common farm pests affecting crops and livestock.</p>
+          </div>
+          
+          <div className="flex bg-white rounded-lg p-1 border border-stone-200 shadow-sm">
+            {['All', 'Crops', 'Livestock'].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat as any)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  filter === cat 
+                    ? 'bg-emerald-100 text-emerald-800 shadow-sm' 
+                    : 'text-stone-600 hover:bg-stone-50'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3 text-sm text-amber-800">
+          <AlertTriangle className="flex-shrink-0 mt-0.5" size={18} />
+          <div>
+            <p className="font-bold mb-1">Safety First</p>
+            <p>Always follow label instructions when using any pest control products. Integrated Pest Management (IPM) focuses on prevention, monitoring, and using the least toxic methods first.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filteredPests.map((pest, idx) => (
+            <div key={idx} className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden flex flex-col h-full">
+               {pest.imageUrl ? (
+                 <div className="h-48 relative bg-stone-100 border-b border-stone-100">
+                    <img src={pest.imageUrl} alt={pest.name} className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1">
+                        {pest.affects === 'Crops' && <Sprout size={12} className="text-green-600"/>}
+                        {pest.affects === 'Livestock' && <IconDog size={12} className="text-amber-600"/>}
+                        {pest.affects === 'Both' && <AlertCircle size={12} className="text-red-600"/>}
+                        <span className="text-stone-800">{pest.affects}</span>
+                    </div>
+                 </div>
+               ) : (
+                  <div className="h-24 bg-stone-100 flex items-center justify-center border-b border-stone-200">
+                     <Bug size={32} className="text-stone-300"/>
+                  </div>
+               )}
+               
+               <div className="p-6 flex-1 flex flex-col">
+                  <div className="mb-3">
+                     <h3 className="text-xl font-bold text-stone-900">{pest.name}</h3>
+                     {pest.hawaiianName && (
+                       <p className="text-emerald-700 font-medium text-sm">{pest.hawaiianName}</p>
+                     )}
+                  </div>
+
+                  <p className="text-stone-600 text-sm mb-4 leading-relaxed">{pest.description}</p>
+
+                  <div className="mt-auto space-y-3">
+                     <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                        <h4 className="font-bold text-emerald-900 text-sm mb-1 flex items-center gap-2">
+                           <ShieldCheck size={14}/> Management
+                        </h4>
+                        <p className="text-stone-800 text-xs leading-relaxed">{pest.management}</p>
+                     </div>
+                     
+                     <div className="pl-2 border-l-2 border-amber-200">
+                        <p className="text-xs text-stone-500">
+                           <span className="font-bold text-stone-700">Prevention:</span> {pest.prevention}
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          ))}
+        </div>
+       </div>
+    </div>
+  );
+};
+
+// Simple Icon helper for the card
+const IconDog = ({size, className}: {size: number, className?: string}) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-2.823.47-4.113 6.006-4 7 .08.703 1.725 1.722 3.656 1 1.261-.472 1.96-1.45 2.344-2.5"/>
+    <path d="M14.267 5.172c0-1.39 1.577-2.493 3.5-2.172 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.96-1.45-2.344-2.5"/>
+    <path d="M8 14v.5"/>
+    <path d="M16 14v.5"/>
+    <path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/>
+    <path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444c0-1.061-.162-2.2-.493-3.309"/>
+  </svg>
+);
 
 export const PlanningView: React.FC = () => {
   const [formData, setFormData] = useState({

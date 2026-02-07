@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
-import { CropsView, LivestockView, PlanningView, AboutView, MarketplaceView, LaauView, BarterView } from './components/ReferenceViews';
+import { CropsView, LivestockView, PlanningView, AboutView, MarketplaceView, LaauView, BarterView, PestControlView } from './components/ReferenceViews';
 import { ProfileView, CommunityView } from './components/UserViews';
 import { AppView, Message, MarketItem, UserProfile, CommunityPost, BarterItem, LaauPlant } from './types';
 import { INITIAL_MARKET_ITEMS, INITIAL_COMMUNITY_POSTS, INITIAL_BARTER_ITEMS, LAAU_DATA } from './constants';
@@ -46,6 +46,8 @@ I am here to help you with farming and land stewardship. What are you working on
         return <CropsView />;
       case AppView.LIVESTOCK:
         return <LivestockView />;
+      case AppView.PESTS:
+        return <PestControlView />;
       case AppView.LAAU:
         return (
           <LaauView 

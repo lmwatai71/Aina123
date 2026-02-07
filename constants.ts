@@ -1,5 +1,5 @@
 
-import { CropInfo, LivestockInfo, MarketItem, BarterItem, LaauPlant, CommunityPost } from './types';
+import { CropInfo, LivestockInfo, MarketItem, BarterItem, LaauPlant, CommunityPost, PestInfo } from './types';
 
 export const LAAU_DATA: Record<string, LaauPlant[]> = {
   respiratory: [
@@ -411,6 +411,76 @@ export const REFERENCE_LIVESTOCK: LivestockInfo[] = [
     focus: "Pest Control (Snails/Slugs), Eggs",
     tips: "Hardy in wet areas. Voracious eaters of garden pests. Needs access to water to keep eyes/nostrils clean.",
     imageUrl: "https://images.unsplash.com/photo-1555852095-64e7428df0fa?auto=format&fit=crop&q=80&w=600"
+  }
+];
+
+export const REFERENCE_PESTS: PestInfo[] = [
+  {
+    name: "Little Fire Ant (LFA)",
+    hawaiianName: "Naonao",
+    type: "Insect",
+    affects: "Both",
+    description: "Tiny, stinging ants that nest in trees, soil, and homes. Stings can blind pets and injure workers.",
+    management: "Test with peanut butter on chopsticks. Use bait products (e.g., Tango) every 4-6 weeks to sterilize the queen. Do not just spray contact poison.",
+    prevention: "Quarantine all new plants and materials. Test before bringing onto the farm.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Wasmannia_auropunctata_worker.jpg/640px-Wasmannia_auropunctata_worker.jpg"
+  },
+  {
+    name: "Oriental Fruit Fly",
+    hawaiianName: "Nalo Hua",
+    type: "Insect",
+    affects: "Crops",
+    description: "Lays eggs in fruit (papaya, mango, citrus, etc.), causing maggots and rot.",
+    management: "Sanitation is key: pick up dropped fruit immediately. Use Methyl Eugenol traps for monitoring. Bag fruit on the tree.",
+    prevention: "Harvest early when fruit breaks color. Use protein bait sprays to kill females.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Bactrocera_dorsalis.jpg/640px-Bactrocera_dorsalis.jpg"
+  },
+  {
+    name: "Coffee Berry Borer (CBB)",
+    type: "Insect",
+    affects: "Crops",
+    description: "Tiny beetle that drills into coffee cherry beans, ruining quality.",
+    management: "Strip picking (remove all raisins). Spray Beauveria bassiana fungus monthly.",
+    prevention: "Complete harvest rounds every 2-3 weeks. Monitor trap counts.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Hypothenemus_hampei_-_Flickr_-_USDA_gov.jpg/640px-Hypothenemus_hampei_-_Flickr_-_USDA_gov.jpg"
+  },
+  {
+    name: "Mongoose",
+    hawaiianName: "Manakuke",
+    type: "Animal",
+    affects: "Livestock",
+    description: "Predator of eggs and young chicks. Active during the day.",
+    management: "Live traps baited with fish or meat. Secure coop fencing (1/2 inch hardware cloth).",
+    prevention: "Keep nesting boxes elevated. Remove food scraps that attract them.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Small_Asian_Mongoose.jpg/640px-Small_Asian_Mongoose.jpg"
+  },
+  {
+    name: "Slugs & Snails",
+    hawaiianName: "Pūpū",
+    type: "Animal",
+    affects: "Crops",
+    description: "Eat leafy greens and young seedlings. Carrier of Rat Lungworm Disease.",
+    management: "Iron phosphate bait (organic safe). Hand pick at night. Ducks are excellent predators.",
+    prevention: "Eliminate hiding spots (boards, weed mats). Wash all produce thoroughly.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Snail-WA_edit02.jpg/640px-Snail-WA_edit02.jpg"
+  },
+  {
+    name: "Chinese Rose Beetle",
+    type: "Insect",
+    affects: "Crops",
+    description: "Nocturnal beetle that eats holes in leaves (lace-like pattern), affecting kalo, cacao, and beans.",
+    management: "They are attracted to light but feed in shadows. Shield lights or use them as traps.",
+    prevention: "Protect young plants with barrier cages. They feed at night, so checks during day might miss them.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Adoretus_sinicus.jpg/640px-Adoretus_sinicus.jpg"
+  },
+  {
+    name: "Barber Pole Worm",
+    type: "Parasite",
+    affects: "Livestock",
+    description: "Blood-sucking stomach worm in sheep and goats. Causes anemia (pale eyelids/gums) and death.",
+    management: "FAMACHA eye scoring to identify needs. Deworm only affected animals to prevent resistance.",
+    prevention: "Rotational grazing (don't graze below 4 inches). Mixed species grazing (cows/horses clean up pastures).",
+    imageUrl: null
   }
 ];
 

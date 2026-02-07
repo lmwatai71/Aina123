@@ -3,6 +3,7 @@ export enum AppView {
   CHAT = 'CHAT',
   CROPS = 'CROPS',
   LIVESTOCK = 'LIVESTOCK',
+  PESTS = 'PESTS',
   PLANNING = 'PLANNING',
   MARKETPLACE = 'MARKETPLACE',
   BARTER = 'BARTER',
@@ -33,6 +34,18 @@ export interface LivestockInfo {
   hawaiianName: string;
   focus: string;
   tips: string;
+  imageUrl?: string;
+}
+
+export interface PestInfo {
+  name: string;
+  hawaiianName?: string;
+  scientificName?: string;
+  type: 'Insect' | 'Animal' | 'Fungus' | 'Nematode' | 'Parasite';
+  affects: 'Crops' | 'Livestock' | 'Both' | 'Structures';
+  description: string;
+  management: string;
+  prevention: string;
   imageUrl?: string;
 }
 
